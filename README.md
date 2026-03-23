@@ -1,73 +1,119 @@
-# React + TypeScript + Vite
+# GitHub Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A client-side React application that allows you to search for GitHub users and explore their repositories.
 
-Currently, two official plugins are available:
+🔗 **Live demo**: [desbravador-software-github-explore.vercel.app](https://desbravador-software-github-explore.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Search for any GitHub user with autocomplete suggestions
+- View user profile details: avatar, bio, email, followers and following
+- List all public repositories ordered by stars (descending by default)
+- Change repository sort order: stars ↓, stars ↑, name, or last updated
+- View repository details: name, description, stars, forks, language, branch, dates
+- Direct link to the repository on GitHub
+- Smooth animations powered by Framer Motion
+- Fully responsive layout
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [React](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
+- [Vite](https://vitejs.dev)
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [React Router v7](https://reactrouter.com)
+- [Axios](https://axios-http.com)
+- [Framer Motion](https://www.framer.com/motion)
+- [GitHub REST API v3](https://docs.github.com/en/rest)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting started
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/gianseneda/desbravador-software-github-explorer.git
+
+# Navigate to the project directory
+cd desbravador-software-github-explorer
+
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root of the project:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_GITHUB_TOKEN=your_github_token_here
 ```
+
+> The token is optional but recommended. Without it, the GitHub API allows only 60 requests/hour. With a token, the limit increases to 5,000 requests/hour.
+>
+> To generate a token: **GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)** — select the `public_repo` scope.
+
+### Running locally
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+### Build for production
+
+```bash
+npm run build
+```
+
+---
+
+## Project structure
+
+```
+src/
+├── components/
+│   ├── RepoCard/
+│   ├── RepoList/
+│   ├── RepoModal/
+│   ├── SearchInput/
+│   └── UserCard/
+├── hooks/
+│   └── useGithub.ts
+├── pages/
+│   ├── Home/
+│   └── Repo/
+├── services/
+│   └── github.ts
+└── utils/
+    ├── formatDate.ts
+    └── languageColors.ts
+```
+
+---
+
+## API endpoints used
+
+| Endpoint                      | Description                   |
+| ----------------------------- | ----------------------------- |
+| `GET /search/users?q={query}` | Search users for autocomplete |
+| `GET /users/{username}`       | Get user profile details      |
+| `GET /users/{username}/repos` | List user repositories        |
+| `GET /repos/{owner}/{repo}`   | Get repository details        |
+
+---
+
+## License
+
+MIT
